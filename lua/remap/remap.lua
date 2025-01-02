@@ -9,7 +9,7 @@ vim.api.nvim_set_keymap('x', '/', ":s/\\/\\<CR>:nohl<CR>", {noremap = true, sile
 vim.api.nvim_set_keymap('n', '<Space><Space>', ":Telescope find_files<CR>", {noremap = true, silent = false})
 vim.api.nvim_set_keymap('n', '<Leader>fb', ":Telescope file_browser<CR>", {noremap = true, silent = false})
 vim.api.nvim_set_keymap('n', '<Space>t', ":NvimTreeToggle<CR>", {noremap = true, silent = false})
-vim.api.nvim_set_keymap('n', '<C-p>', ":PopWindow<CR>", {noremap = true, silent = false})
+vim.api.nvim_set_keymap('n', '<C-p>', ":BufferSurfing<CR>", {noremap = true, silent = false})
 vim.keymap.set("v", "<C-d>", function ()
 	local lines = require("utils.string_utils").get_visual_selection_text();
 end)
