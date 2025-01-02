@@ -4,7 +4,11 @@ local map = require("utils.table_utils").map
 local buff_util = require("utils.buffer_utils")
 
 local M = {}
-local is_toggle = true
+local toggle_mode = true
+
+local function cleanup()
+	toggle_mode = true
+end
 
 local function get_curr_line()
 	local pos = vim.api.nvim_win_get_cursor(0)
@@ -13,36 +17,31 @@ local function get_curr_line()
 end
 
 function M.exit()
-	is_toggle = true
+	cleanup()
 	vim.api.nvim_win_close(0, true)
 end
 
 function M.select_file()
-	if (is_toggle) then
-		is_toggle = false
-		M.exit()
-		vim.cmd(":b#")
-		return
+	local cmd = ""
+	if (toggle_mode) then
+		cmd = ":b#"
+	else
+		local buffs = buff_util.get_buffs()
+		local i = get_curr_line()
+		cmd = ":b " .. buffs[i]
 	end
-	local buffs = buff_util.get_buffs()
-	local i = get_curr_line()
-	print(buffs[i])
 	M.exit()
-	vim.cmd(":b " .. buffs[i])
+	vim.cmd(cmd)
 end
 
 local function handle_movement()
-	is_toggle = false
+	toggle_mode = false
 	local buffs = buff_util.get_buffs()
-	local jump = 0
-	local buff_number = 0;
-	if (not is_toggle) then
-		local curr_buff = buffs[get_curr_line()]
-		buff_number = buff_util.get_next_buff(curr_buff);
-		jump = indexOf(buffs, buff_number)
-		vim.cmd(":" .. jump)
-	end
-	print(buff_number)
+	local buffnow = buffs[get_curr_line()]
+	local nextbfnr = buff_util.get_next_buff(buffnow);
+	local nextbfi = indexOf(buffs, nextbfnr)
+	vim.cmd(":" .. nextbfi)
+	print(nextbfnr)
 end
 
 function M.handler()
@@ -63,7 +62,7 @@ local function open_window(buf)
 		row = row,
 		col = col,
 		style = "minimal",
-		border = "rounded", -- Border style: single, double, rounded, etc.
+		border = "rounded",
 	})
 end
 

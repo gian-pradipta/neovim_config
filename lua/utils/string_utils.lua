@@ -3,7 +3,6 @@ local M = {}
 
 local function get_regular_v_text(srow, erow, scol, ecol)
 	if vim.fn.mode() == 'v' then
-		print("Hello")
 		if srow < erow or (srow == erow and scol <= ecol) then
 			return vim.api.nvim_buf_get_text(0, srow - 1, scol - 1, erow - 1, ecol, {})
 		else
