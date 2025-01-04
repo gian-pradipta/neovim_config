@@ -1,7 +1,20 @@
 return {
-	"folke/lazy.nvim",
+	"folke/lazydev.nvim",
+    ft="lua",
 	name = "lazydev.nvim",
-	config = function()
-		print("LazyDev plugin loaded.")
-	end
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+    config = function ()
+        require("lazydev").setup({
+            debug = false,
+            library = {
+                "nvim-cmp/lua/cmp/types",
+            },
+        })
+    end
 }

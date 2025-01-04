@@ -6,5 +6,6 @@ return {
 	require("plugins.config.nvim-cmp"),
 	require("plugins.config.nvim-telescope"),
 	require("plugins.config.nvim-tree"),
-	require("plugins.config.lazydev")
+	require("plugins.config.lazydev"),
+    require("plugins.config.treesitter")
 }
