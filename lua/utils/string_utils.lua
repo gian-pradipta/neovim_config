@@ -56,5 +56,10 @@ function M.get_visual_selection_text()
 	return vim.fn.mode()
 end
 
+function M.ltrim(line)
+    line = string.gsub(line, "^%s+", "")
+    return line
+end
+
 
 return M

@@ -25,18 +25,36 @@ end
 
 -- Configures all servers
 local function configure_all(lspconfig)
-  local lua_lsp_config = require("plugins.config.lua_lsp")
-  local clangd_config = require("plugins.config.clangd")
-  
-  -- Configure Lua and Clangd
-  lua_lsp_config.config(lspconfig, on_attach)
-  clangd_config.config(lspconfig, on_attach)
-  
-  -- Configure TypeScript server
-  lspconfig.tsserver.setup({
-    on_attach = on_attach,
-    capabilities = require("cmp_nvim_lsp").default_capabilities(), -- Optional for autocompletion
-  })
+    local lua_lsp_config = require("plugins.config.lua_lsp")
+    local clangd_config = require("plugins.config.clangd")
+    lua_lsp_config.config(lspconfig)
+    clangd_config.config(lspconfig)
+    lspconfig.tsserver.setup({
+        on_attach = on_attach,
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    })
+    lspconfig.volar.setup ({
+        filetypes = { 'vue' },
+        settings = {
+            volar = {
+                takeOverMode = true,
+            },
+        },
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    })
+    lspconfig.pyright.setup {}
+end
+
+local function setup_lsp_diags()
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+      virtual_text = false,
+      signs = true,
+      update_in_insert = false,
+      underline = true,
+    }
+  )
 end
 
 -- Plugin Configuration
@@ -49,11 +67,13 @@ return {
 
     -- Ensure Mason installs the required LSP servers
     mason_lspconfig.setup({
-      ensure_installed = { "lua_ls", "clangd", "ts_ls" }, -- Add more servers if needed
+      ensure_installed = {
+                "lua_ls", "clangd", "ts_ls", "volar"
+            }, -- Add more servers if needed
     })
-
     -- Configure installed servers
     configure_all(lspconfig)
+    setup_lsp_diags()
   end,
 }
 

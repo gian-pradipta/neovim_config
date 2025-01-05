@@ -1,5 +1,5 @@
 return {
-	require("plugins.config.color"),
+    require("plugins.config.colors.color").catppuccin,
 	require("plugins.config.mason"),
 	require("plugins.config.mason-lspconfig"),
 	require("plugins.config.lspconfig"),
