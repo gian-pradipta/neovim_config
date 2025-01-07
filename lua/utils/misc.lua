@@ -1,5 +1,5 @@
 local M = {}
-local len = require("utils.table_utils").get_length
+local len = require("utils.table").get_length
 
 local function set_normal_mode()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
@@ -23,7 +23,7 @@ function M.set_mode(mode)
 end
 
 function M.comment()
-    local lines = require("utils.string_utils").get_visual_selection_text();
+    local lines = require("utils.string").get_visual_selection_text();
     local startln = vim.fn.getpos("v")[2]
     local char = vim.fn.getchar()
     local sym = ""
@@ -45,7 +45,7 @@ end
 
 
 function M.uncomment()
-    local lines = require("utils.string_utils").get_visual_selection_text();
+    local lines = require("utils.string").get_visual_selection_text();
     local startln = vim.fn.getpos("v")[2]
     local char = vim.fn.getchar()
     local lensym = 1

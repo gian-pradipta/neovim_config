@@ -1,8 +1,6 @@
-require("remap.remap")
-require("general_config.general_config")
 require("config.lazy")
+require("global.variables")
+require("remap.remap")
+require("general.config")
 require("commands.commands")
-
-
-
-
+require("commands.autocomd")

@@ -9,7 +9,7 @@ vim.api.nvim_create_user_command(
 vim.api.nvim_create_user_command(
 	"BufferSurfing",
 	function ()
-		require("commands.buffer_surfing").create_menu();
+		require("features.buffer_surfing").create_menu();
 	end,
 	{range = false}
 );

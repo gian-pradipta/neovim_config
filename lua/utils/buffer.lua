@@ -1,9 +1,9 @@
 local M = {}
-local len = require("utils.table_utils").get_length
-local indexOf = require("utils.table_utils").indexOf
+local len = require("utils.table").get_length
+local indexOf = require("utils.table").indexOf
 
 function M.get_buffs()
-    local filter = require("utils.table_utils").filter
+    local filter = require("utils.table").filter
     local bufs = filter(vim.api.nvim_list_bufs(), function (buf)
         return vim.api.nvim_buf_get_option(buf, 'buflisted')
     end)

@@ -1,8 +1,8 @@
-local ltrim = require("utils.string_utils").ltrim
-local len = require("utils.table_utils").get_length
-local get_curr_listed_buff = require("utils.buffer_utils").get_curr_listed_buff
-local get_visual_selection_text = require("utils.string_utils").get_visual_selection_text
-local set_mode = require "utils.misc_utils".set_mode
+local ltrim = require("utils.string").ltrim
+local len = require("utils.table").get_length
+local get_curr_listed_buff = require("utils.buffer").get_curr_listed_buff
+local get_visual_selection_text = require("utils.string").get_visual_selection_text
+local set_mode = require "utils.misc".set_mode
 local M = {}
 
 local function is_line_commented(sym,line)
@@ -40,7 +40,7 @@ end
 
 
 function M.uncomment(sym)
-    local lines = require("utils.string_utils").get_visual_selection_text();
+    local lines = require("utils.string").get_visual_selection_text();
     local startln = vim.fn.getpos("v")[2]
     set_mode("n")
     vim.cmd(":" .. startln)
