@@ -38,7 +38,6 @@ end)
 
 vim.keymap.set("n", "<Space>c", function ()
     local ms = require("features.multiple_selections")
-    local len = require("utils.table").get_length
     local word = vim.fn.input("Change to: ", ms.word_now)
     ms.change_hl_word(word)
 end)

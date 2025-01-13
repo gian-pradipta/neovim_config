@@ -56,9 +56,9 @@ end
 function M.get_words_and_highlight_first(word)
     get_all_words(word)
     local current_line = vim.api.nvim_win_get_cursor(0)[1]
-    local current_col = vim.api.nvim_win_get_cursor(0)[2]
+    local current_col = vim.api.nvim_win_get_cursor(0)[2] + 1
     for i, line_info in ipairs(M.line_infos) do
-        if (current_line == line_info.line and current_col == line_info.scol) then
+        if (current_line == line_info.line and (current_col == line_info.scol or current_col == line_info.ecol)) then
             curr_index = i
             break
         end
