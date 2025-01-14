@@ -23,21 +23,34 @@ vim.keymap.set("x", "<c-d>", function ()
     local words = get_visual_selection_text()
     local word = words[len(words)]
 	require("utils.misc").set_mode("n")
-    ms.get_words_and_highlight_first(word)
+    ms.get_all_words(word)
+    local index = ms.get_index_from_cursor()
+    ms.add_hl(index)
+
 end)
 
 vim.keymap.set("n", "<c-d>", function ()
     local ms = require("features.multiple_selections")
-    ms.toggle_hl_next()
+    local i = ms.get_index_from_cursor()
+    if (i ~= nil) then
+        ms.toggle_hl(i)
+    end
 end)
 
-vim.keymap.set("n", "<Space>d", function ()
+vim.keymap.set("n", "N", function ()
     local ms = require("features.multiple_selections")
-    ms.clear_hl_next()
+    ms.next()
 end)
+
+vim.keymap.set("n", "<Space>p", function ()
+    local ms = require("features.multiple_selections")
+    ms.prev()
+end)
+
 
 vim.keymap.set("n", "<Space>c", function ()
     local ms = require("features.multiple_selections")
+    print(ms.word_now)
     local word = vim.fn.input("Change to: ", ms.word_now)
     ms.change_hl_word(word)
 end)
