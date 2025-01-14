@@ -29,13 +29,10 @@ function M.comment(sym)
     local startln = vim.fn.getpos("v")[2]
     set_mode("n")
     vim.cmd(":" .. startln)
-    for _ = 1, len(lines), 1 do
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("I", true, false, true), "n", false)
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(sym .. " ", true, false, true), "n", false)
-        set_mode("n")
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "n", false)
+    for i, _ in ipairs(lines) do
+        lines[i] = sym .. lines[i]
     end
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":" .. startln .. "<CR>", true, false, true), "n", false)
+    vim.api.nvim_buf_set_lines(0, startln - 1, startln + len(lines) - 1, false, lines)
 end
 
 
@@ -44,30 +41,20 @@ function M.uncomment(sym)
     local startln = vim.fn.getpos("v")[2]
     set_mode("n")
     vim.cmd(":" .. startln)
-    for _ = 1, len(lines), 1 do
-    local lensym = #sym
-        local line_num = vim.api.nvim_win_get_cursor(0)[1]
-        local current_line = vim.api.nvim_buf_get_lines(0, line_num - 1, line_num, false)[1]
-        current_line = ltrim(current_line)
-        local firstchars = string.sub(current_line, 1, #sym + 1)
-        print(firstchars)
-        if (firstchars == sym .. " ") then
-            lensym = lensym + 1
+    for i, _ in ipairs(lines) do
+        local sym_from_line = string.sub(lines[i], 1, #sym)
+        if (sym_from_line == sym) then
+            lines[i] = string.sub(lines[i], #sym + 1, #lines[i])
         end
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("^", true, false, true), "n", false)
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(lensym .. "x", true, false, true), "n", false)
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("j", true, false, true), "n", false)
     end
-
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":" .. startln .. "<CR>", true, false, true), "n", false)
+    vim.api.nvim_buf_set_lines(0, startln - 1, startln + len(lines) - 1, false, lines)
 end
 
 function M.comment_toggle()
-
     local currbuff = get_curr_listed_buff()
     local sym = vim.b[currbuff].comment_symbol
     if (sym == nil) then
-       sym = "--"
+       sym = "//"
     end
     local lines = get_visual_selection_text()
     local is_commented = is_block_commented(sym,lines)
